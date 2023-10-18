@@ -22,3 +22,9 @@ export type ValidationError = {
 	tag: string;
 	value: string;
 };
+
+export type SignupRequest = {
+	email: string;
+	name: string;
+	password: string;
+};

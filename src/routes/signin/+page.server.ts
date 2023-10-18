@@ -9,6 +9,14 @@ export const actions = {
 		const email = data.get('email');
 		const password = data.get('password');
 
+		if (!email) {
+			return fail(400, { failed: true, message: 'Email field is empty' });
+		}
+
+		if (!password) {
+			return fail(400, { failed: true, message: 'Password field is empty' });
+		}
+
 		try {
 			const { data } = await axiosClient.post<ApiResponse<string>>('/user/login', {
 				email,

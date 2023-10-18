@@ -5,19 +5,15 @@
 	import { Label } from '$lib/components/ui/label';
 	import { Button } from '$lib/components/ui/button';
 	import { fade } from 'svelte/transition';
-	import { enhance } from '$app/forms';
+	import { applyAction, enhance } from '$app/forms';
+	import { Loader2 } from 'lucide-svelte';
+	import { goto } from '$app/navigation';
 
 	let email = '';
 	let password = '';
-
-	let showAlert = false;
-	let alertValue = '';
+	let loading = false;
 
 	export let form;
-
-	const submitLogin = (input: any) => {
-		console.log(input);
-	};
 </script>
 
 <div class="min-h-screen h-full flex items-center justify-center">
@@ -35,8 +31,22 @@
 					</Alert.Root>
 				</div>
 			{/if}
-			<form method="POST" action="/auth" use:enhance={submitLogin}>
-				<div class="space-y-1">
+			<form
+				method="POST"
+				action="/signin"
+				on:submit={() => (loading = true)}
+				use:enhance={() => {
+					return async ({ result, update }) => {
+						loading = false;
+						if (result.type === 'success') {
+							goto('/dashboard');
+						} else {
+							update()
+						}
+					};
+				}}
+			>
+				<div class="space-y-1 mb-1">
 					<Label for="email">Email</Label>
 					<Input name="email" bind:value={email} id="email" placeholder="your@email.com" />
 				</div>
@@ -50,8 +60,18 @@
 						type="password"
 					/>
 				</div>
-				<Button type="submit">Sign-in</Button>
+				<Button class="w-full" type="submit" disabled={loading}>
+					{#if loading}
+						<Loader2 class="mr-2 h-4 w-4 animate-spin" />
+						Please wait
+					{:else}
+						Sign-in
+					{/if}
+				</Button>
 			</form>
+			<p class="text-center text-sm text-gray-700 mt-4">
+				Don't have an account? <a class="text-slate-500 font-bold" href="/signup">Sign up</a>
+			</p>
 		</Card.Content>
 	</Card.Root>
 </div>
