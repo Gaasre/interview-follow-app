@@ -8,9 +8,9 @@ import type {
 import axiosClient from '$utils/axios-client';
 import type { AxiosError } from 'axios';
 
-export const getAllApplications = async (page: number) => {
+export const getAllApplications = async (page: number, sort: string) => {
 	const { data } = await axiosClient.get<ApiResponse<PaginatedResult<Application>>>(
-		`/application/all?page=${page}`
+		`/application/all?page=${page}&sort=${sort}`
 	);
 	return data.data;
 };

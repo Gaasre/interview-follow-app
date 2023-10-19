@@ -2,14 +2,35 @@
 	import * as Card from '$lib/components/ui/card';
 	import * as Table from '$lib/components/ui/table';
 	import { Badge } from '$lib/components/ui/badge';
-	import { Filter, ArrowDownUp } from 'lucide-svelte';
+	import { Filter, ArrowDownUp, ArrowDownAZ, ArrowUpZA } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button';
 	import NewApplication from './(components)/new-application.svelte';
 	import DeleteApplication from './(components)/delete-application.svelte';
 	import EditApplication from './(components)/edit-application.svelte';
+	import { goto } from '$app/navigation';
 
 	export let data;
 	export let form;
+
+	let titleOrder = data.sort?.includes('-title') ? -1 : data.sort?.includes('title') ? 1 : 0;
+	let companyOrder = data.sort?.includes('-company') ? -1 : data.sort?.includes('company') ? 1 : 0;
+
+	const sort = () => {
+		let a = [];
+		if (titleOrder == 1) {
+			a.push('title');
+		} else if (titleOrder == -1) {
+			a.push('-title');
+		}
+
+		if (companyOrder == 1) {
+			a.push('company');
+		} else if (companyOrder == -1) {
+			a.push('-company');
+		}
+
+		return a.join(',');
+	};
 </script>
 
 <div>
@@ -21,27 +42,65 @@
 			<Card.Description>Manage your job applications here</Card.Description>
 		</Card.Header>
 		<Card.Content>
-			<div class="py-6 flex justify-between">
-				<div class="space-x-1">
-					<Button variant="secondary">
-						<Filter class="mr-2" size={16} />
-						Filter
-					</Button>
-					<Button variant="secondary">
-						<ArrowDownUp class="mr-2" size={16} />
-						Sort
-					</Button>
-				</div>
-				<div>
-					<NewApplication {form} />
-				</div>
+			<div class="py-6 flex justify-end">
+				<NewApplication {form} />
 			</div>
 			<Table.Root>
 				<Table.Header>
 					<Table.Row>
-						<Table.Head>#</Table.Head>
-						<Table.Head>Title</Table.Head>
-						<Table.Head>Company</Table.Head>
+						<Table.Head class="w-[100px]">#</Table.Head>
+						<Table.Head>
+							<span>Title</span>
+							<Button variant="ghost" class="p-1 h-auto"><Filter size={12} /></Button>
+							<Button
+								variant={titleOrder == 0 ? 'ghost' : 'secondary'}
+								class="p-1 h-auto"
+								on:click={() => {
+									if (titleOrder == 0) {
+										titleOrder = 1;
+									} else if (titleOrder == 1) {
+										titleOrder = -1;
+									} else {
+										titleOrder = 0;
+									}
+									goto(`/dashboard/applications?sort=${sort()}`);
+								}}
+							>
+								{#if titleOrder == 0}
+									<ArrowDownUp size={12} />
+								{:else if titleOrder == 1}
+									<ArrowDownAZ size={12} />
+								{:else}
+									<ArrowUpZA size={12} />
+								{/if}
+							</Button>
+						</Table.Head>
+						<Table.Head>
+							<span>Company</span>
+							<Button variant="ghost" class="p-1 h-auto"><Filter size={12} /></Button>
+							<Button
+								variant={companyOrder == 0 ? 'ghost' : 'secondary'}
+								class="p-1 h-auto"
+								on:click={() => {
+									if (companyOrder == 0) {
+										companyOrder = 1;
+									} else if (companyOrder == 1) {
+										companyOrder = -1;
+									} else {
+										companyOrder = 0;
+									}
+									goto(`/dashboard/applications?sort=${sort()}`);
+								}}
+							>
+								{#if companyOrder == 0}
+									<ArrowDownUp size={12} />
+								{:else if companyOrder == 1}
+									<ArrowDownAZ size={12} />
+								{:else}
+									<ArrowUpZA size={12} />
+								{/if}
+							</Button>
+						</Table.Head>
 						<Table.Head class="w-[150px]">Status</Table.Head>
 						<Table.Head class="text-right w-[150px]">Actions</Table.Head>
 					</Table.Row>
@@ -50,7 +109,7 @@
 					{#each data.applications.items as application, i (i)}
 						<Table.Row>
 							<Table.Cell>{i}</Table.Cell>
-							<Table.Cell class="font-bold">{application.title}</Table.Cell>
+							<Table.Cell>{application.title}</Table.Cell>
 							<Table.Cell>{application.company}</Table.Cell>
 							<Table.Cell><Badge>Resume sent</Badge></Table.Cell>
 							<Table.Cell class="text-right space-x-0.5">

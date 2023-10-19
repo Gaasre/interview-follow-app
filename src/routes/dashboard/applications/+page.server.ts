@@ -7,9 +7,11 @@ import {
 import type { ApiResponse, ValidationError } from '$types/types';
 import { fail } from '@sveltejs/kit';
 
-export async function load() {
+export async function load({ url }) {
+	const sort = url.searchParams.get('sort');
 	return {
-		applications: await getAllApplications(0)
+		applications: await getAllApplications(0, sort),
+		sort
 	};
 }
 
