@@ -4,7 +4,7 @@
 
 <div class="grid grid-cols-6">
 	<Sidebar />
-	<div class="col-span-5 border-l">
+	<div class="col-span-5 border-l bg-primary-foreground p-8">
 		<slot />
 	</div>
 </div>
