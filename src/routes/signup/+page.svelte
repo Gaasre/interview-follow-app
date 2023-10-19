@@ -47,7 +47,7 @@
 				method="POST"
 				action="/signup"
 				use:enhance={() => {
-					return async ({ result, update }) => {
+					return async ({ update }) => {
 						loading = false;
 						update();
 					};

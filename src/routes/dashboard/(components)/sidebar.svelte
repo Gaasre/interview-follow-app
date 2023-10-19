@@ -6,14 +6,14 @@
 	$: variant = (page: string) => {
 		const a = $page.url.pathname.split('/');
 		const b = a[a.length - 1];
-		return b.includes(page) ? 'secondary' : 'ghost';
+		return b.includes(page) ? 'default' : 'ghost';
 	};
 </script>
 
-<div class="pb-12 min-h-screen h-full">
+<div class="pb-12 min-h-screen h-full bg-primary-foreground">
 	<div class="space-y-4 py-4">
 		<div class="px-4 py-2">
-			<h2 class="mb-2 px-4 text-lg font-semibold tracking-tight">Menu</h2>
+			<h2 class="mb-2 px-4 text-lg font-bold tracking-tight">Menu</h2>
 			<div class="space-y-1">
 				<Button
 					href="/dashboard"
@@ -50,7 +50,7 @@
 			</div>
 		</div>
 		<div class="px-4 py-2">
-			<h2 class="mb-2 px-4 text-lg font-semibold tracking-tight">Settings</h2>
+			<h2 class="mb-2 px-4 text-lg font-bold tracking-tight">Settings</h2>
 			<div class="space-y-1">
 				<Button
 					href="/dashboard/account"

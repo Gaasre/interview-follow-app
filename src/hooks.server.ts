@@ -35,8 +35,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 			name: user.name
 		};
 
-		console.log('session', sessionUser);
-
 		event.locals.user = sessionUser;
 	}
 

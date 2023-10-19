@@ -17,6 +17,24 @@ export type Application = {
 	description: string;
 };
 
+export type ApplicationRequest = {
+	company: string;
+	title: string;
+	description: string;
+};
+
+export type PaginatedResult<T> = {
+	items: T[];
+	page: number;
+	size: number;
+	max_page: number;
+	total_pages: number;
+	total: number;
+	last: boolean;
+	first: boolean;
+	visible: number;
+};
+
 export type ValidationError = {
 	field: string;
 	tag: string;

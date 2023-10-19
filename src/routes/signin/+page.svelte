@@ -5,7 +5,7 @@
 	import { Label } from '$lib/components/ui/label';
 	import { Button } from '$lib/components/ui/button';
 	import { fade } from 'svelte/transition';
-	import { applyAction, enhance } from '$app/forms';
+	import { enhance } from '$app/forms';
 	import { Loader2 } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 
@@ -41,7 +41,7 @@
 						if (result.type === 'success') {
 							goto('/dashboard');
 						} else {
-							update()
+							update();
 						}
 					};
 				}}
