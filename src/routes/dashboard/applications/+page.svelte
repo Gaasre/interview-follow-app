@@ -2,10 +2,11 @@
 	import * as Card from '$lib/components/ui/card';
 	import * as Table from '$lib/components/ui/table';
 	import { Badge } from '$lib/components/ui/badge';
-	import { Filter, Trash, ArrowDownUp, Pencil } from 'lucide-svelte';
+	import { Filter, ArrowDownUp } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button';
 	import NewApplication from './(components)/new-application.svelte';
 	import DeleteApplication from './(components)/delete-application.svelte';
+	import EditApplication from './(components)/edit-application.svelte';
 
 	export let data;
 	export let form;
@@ -53,7 +54,7 @@
 							<Table.Cell>{application.company}</Table.Cell>
 							<Table.Cell><Badge>Resume sent</Badge></Table.Cell>
 							<Table.Cell class="text-right space-x-0.5">
-								<Button class="p-1 rounded-lg h-auto" variant="ghost"><Pencil size={16} /></Button>
+								<EditApplication {form} {application} />
 								<DeleteApplication id={application.id} />
 							</Table.Cell>
 						</Table.Row>
