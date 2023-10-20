@@ -7,8 +7,8 @@ import {
 import type { ApiResponse, ValidationError } from '$types/types';
 import { fail } from '@sveltejs/kit';
 
-export async function load({ url }) {
-	const sort = url.searchParams.get('sort');
+export async function load({ url }: { url: URL }) {
+	const sort = url.searchParams.get('sort') as string;
 	return {
 		applications: await getAllApplications(0, sort),
 		sort
@@ -16,10 +16,11 @@ export async function load({ url }) {
 }
 
 export const actions = {
-	new: async ({ request }) => {
+	new: async ({ request }: { request: Request }) => {
 		const data = await request.formData();
 		const title = data.get('title') as string;
 		const company = data.get('company') as string;
+		const link = data.get('link') as string;
 		const description = data.get('description') as string;
 
 		if (!title) {
@@ -32,13 +33,18 @@ export const actions = {
 
 		if (!description) {
 			return fail(400, { failed: true, message: 'Description field is empty' });
+		}
+
+		if (!link) {
+			return fail(400, { failed: true, message: 'Link field is empty' });
 		}
 
 		try {
 			await newApplication({
 				title,
 				company,
-				description
+				description,
+				link
 			});
 
 			return { success: true };
@@ -47,11 +53,12 @@ export const actions = {
 			return fail(400, { failed: true, message: error.message });
 		}
 	},
-	edit: async ({ request }) => {
+	edit: async ({ request }: { request: Request }) => {
 		const data = await request.formData();
 		const id = data.get('id') as string;
 		const title = data.get('title') as string;
 		const company = data.get('company') as string;
+		const link = data.get('link') as string;
 		const description = data.get('description') as string;
 
 		if (!title) {
@@ -66,11 +73,16 @@ export const actions = {
 			return fail(400, { failed: true, message: 'Description field is empty' });
 		}
 
+		if (!link) {
+			return fail(400, { failed: true, message: 'Link field is empty' });
+		}
+
 		try {
 			await editApplication(id, {
 				title,
 				company,
-				description
+				description,
+				link
 			});
 
 			return { success: true };
@@ -79,7 +91,7 @@ export const actions = {
 			return fail(400, { failed: true, message: error.message });
 		}
 	},
-	delete: async ({ request }) => {
+	delete: async ({ request }: { request: Request }) => {
 		const data = await request.formData();
 		const id = data.get('id') as string;
 

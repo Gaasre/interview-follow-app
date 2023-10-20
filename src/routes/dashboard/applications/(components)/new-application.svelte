@@ -10,8 +10,10 @@
 	import type { ActionData } from '../$types';
 	import { fade } from 'svelte/transition';
 	import { invalidateAll } from '$app/navigation';
+
 	let title = '';
 	let company = '';
+	let link = '';
 	let description = '';
 
 	let newOpen = false;
@@ -31,7 +33,7 @@
 		<Plus class="mr-2" size={16} />
 		Add application
 	</Dialog.Trigger>
-	<Dialog.Content class="sm:max-w-[425px]">
+	<Dialog.Content class="sm:max-w-[600px]">
 		<Dialog.Header>
 			<Dialog.Title>New Application</Dialog.Title>
 			<Dialog.Description>Add a new application. Click save when you're done.</Dialog.Description>
@@ -77,13 +79,19 @@
 						/>
 					</div>
 					<div class="space-y-1 mb-4">
+						<Label for="link">Job Link</Label>
+						<Input name="link" bind:value={link} id="link" placeholder="Link" type="url" />
+					</div>
+					<div class="space-y-1 mb-4">
 						<Label for="description">Job Description</Label>
 						<Textarea
 							name="description"
 							bind:value={description}
 							id="description"
 							placeholder="Job description"
+							rows={10}
 						/>
+						<p class="text-xs text-slate-400">Paste the job description here</p>
 					</div>
 				</div>
 				<div class="float-right space-x-1">
@@ -95,7 +103,9 @@
 							Save
 						{/if}</Button
 					>
-					<Button type="button" on:click={() => (newOpen = false)} variant="secondary">Cancel</Button>
+					<Button type="button" on:click={() => (newOpen = false)} variant="secondary"
+						>Cancel</Button
+					>
 				</div>
 			</form>
 		</div>

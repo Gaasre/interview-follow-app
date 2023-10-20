@@ -15,12 +15,14 @@ export type Application = {
 	company: string;
 	title: string;
 	description: string;
+	link: string;
 };
 
 export type ApplicationRequest = {
 	company: string;
 	title: string;
 	description: string;
+	link: string;
 };
 
 export type PaginatedResult<T> = {

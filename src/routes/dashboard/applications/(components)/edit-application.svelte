@@ -84,12 +84,23 @@
 						/>
 					</div>
 					<div class="space-y-1 mb-4">
+						<Label for="link">Job Link</Label>
+						<Input
+							name="link"
+							bind:value={application.link}
+							id="link"
+							placeholder="Link"
+							type="url"
+						/>
+					</div>
+					<div class="space-y-1 mb-4">
 						<Label for="description">Job Description</Label>
 						<Textarea
 							name="description"
 							bind:value={application.description}
 							id="description"
 							placeholder="Job description"
+							rows={10}
 						/>
 					</div>
 				</div>
