@@ -102,6 +102,7 @@
 							</Button>
 						</Table.Head>
 						<Table.Head class="w-[150px]">Status</Table.Head>
+						<Table.Head class="w-[250px]">Link</Table.Head>
 						<Table.Head class="text-right w-[150px]">Actions</Table.Head>
 					</Table.Row>
 				</Table.Header>
@@ -112,6 +113,11 @@
 							<Table.Cell>{application.title}</Table.Cell>
 							<Table.Cell>{application.company}</Table.Cell>
 							<Table.Cell><Badge>Resume sent</Badge></Table.Cell>
+							<Table.Cell>
+								<div class="w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
+									<a class="text-primary" href={application.link}>{application.link} </a>
+								</div>
+							</Table.Cell>
 							<Table.Cell class="text-right space-x-0.5">
 								<EditApplication {form} {application} />
 								<DeleteApplication id={application.id} />
