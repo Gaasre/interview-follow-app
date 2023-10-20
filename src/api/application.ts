@@ -10,7 +10,7 @@ import type { AxiosError } from 'axios';
 
 export const getAllApplications = async (page: number, sort: string) => {
 	const { data } = await axiosClient.get<ApiResponse<PaginatedResult<Application>>>(
-		`/application/all?page=${page}&sort=${sort}`
+		sort ? `/application/all?page=${page}&sort=${sort}` : `/application/all?page=${page}`
 	);
 	return data.data;
 };
