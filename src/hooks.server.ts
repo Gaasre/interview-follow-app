@@ -11,31 +11,36 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	if (token) {
 		sessionToken.set(token);
-		const user = await getSelf();
+		try {
+			const user = await getSelf();
 
-		const requestedPath = event.url.pathname;
+			const requestedPath = event.url.pathname;
 
-		if (!user) {
-			if (!PUBLIC_ROUTES.some((value) => requestedPath.startsWith(value))) {
-				// not a public route and we don't have a user
-				// redirect to signin
-				throw redirect(303, '/signin');
+			if (!user) {
+				if (!PUBLIC_ROUTES.some((value) => requestedPath.startsWith(value))) {
+					// not a public route and we don't have a user
+					// redirect to signin
+					throw redirect(303, '/signin');
+				}
 			}
+
+			if (AUTH_ROUTES.some((value) => requestedPath.startsWith(value))) {
+				// auth route and we already have a user
+				// redirect to the dashboard
+				throw redirect(303, '/dashboard');
+			}
+
+			const sessionUser: User = {
+				id: user.id,
+				email: user.email,
+				name: user.name
+			};
+
+			event.locals.user = sessionUser;
+		} catch (error) {
+			event.cookies.delete('token');
+			throw redirect(303, '/');
 		}
-
-		if (AUTH_ROUTES.some((value) => requestedPath.startsWith(value))) {
-			// auth route and we already have a user
-			// redirect to the dashboard
-			throw redirect(303, '/dashboard');
-		}
-
-		const sessionUser: User = {
-			id: user.id,
-			email: user.email,
-			name: user.name
-		};
-
-		event.locals.user = sessionUser;
 	}
 
 	return await resolve(event);

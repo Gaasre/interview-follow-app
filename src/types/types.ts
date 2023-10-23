@@ -15,6 +15,7 @@ export type Application = {
 	company: string;
 	title: string;
 	description: string;
+	stage: string;
 	link: string;
 };
 
@@ -22,6 +23,7 @@ export type ApplicationRequest = {
 	company: string;
 	title: string;
 	description: string;
+	stage: string;
 	link: string;
 };
 

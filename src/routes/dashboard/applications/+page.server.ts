@@ -44,7 +44,8 @@ export const actions = {
 				title,
 				company,
 				description,
-				link
+				link,
+				stage: "under review"
 			});
 
 			return { success: true };
@@ -60,6 +61,7 @@ export const actions = {
 		const company = data.get('company') as string;
 		const link = data.get('link') as string;
 		const description = data.get('description') as string;
+		const stage = data.get('stage') as string;
 
 		if (!title) {
 			return fail(400, { failed: true, message: 'Title field is empty' });
@@ -77,12 +79,17 @@ export const actions = {
 			return fail(400, { failed: true, message: 'Link field is empty' });
 		}
 
+		if (!stage) {
+			return fail(400, { failed: true, message: 'Stage field is empty' });
+		}
+
 		try {
 			await editApplication(id, {
 				title,
 				company,
 				description,
-				link
+				link,
+				stage
 			});
 
 			return { success: true };

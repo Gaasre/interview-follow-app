@@ -80,7 +80,17 @@
 							bind:value={application.company}
 							id="company"
 							placeholder="Company name"
-							type="company"
+							type="text"
+						/>
+					</div>
+					<div class="space-y-1 mb-4">
+						<Label for="company">Stage</Label>
+						<Input
+							name="stage"
+							bind:value={application.stage}
+							id="stage"
+							placeholder="Stage"
+							type="text"
 						/>
 					</div>
 					<div class="space-y-1 mb-4">
