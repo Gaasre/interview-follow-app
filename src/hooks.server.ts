@@ -3,28 +3,24 @@ import type { User } from '$types/types';
 import { redirect, type Handle } from '@sveltejs/kit';
 import { sessionToken } from './stores';
 
-const PUBLIC_ROUTES = ['/signin', '/signup', '/'];
-const AUTH_ROUTES = ['/signin', '/signup'];
-
 export const handle: Handle = async ({ event, resolve }) => {
 	const token = event.cookies.get('token');
+	const requestedPath = event.url.pathname;
 
 	if (token) {
 		sessionToken.set(token);
 		try {
 			const user = await getSelf();
 
-			const requestedPath = event.url.pathname;
-
 			if (!user) {
-				if (!PUBLIC_ROUTES.some((value) => requestedPath.startsWith(value))) {
-					// not a public route and we don't have a user
+				if (requestedPath.startsWith('/dashboard')) {
+					// not a public route and we don't have a token
 					// redirect to signin
 					throw redirect(303, '/signin');
 				}
 			}
 
-			if (AUTH_ROUTES.some((value) => requestedPath.startsWith(value))) {
+			if (!requestedPath.startsWith('/dashboard')) {
 				// auth route and we already have a user
 				// redirect to the dashboard
 				throw redirect(303, '/dashboard');
@@ -40,6 +36,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 		} catch (error) {
 			event.cookies.delete('token');
 			throw redirect(303, '/');
+		}
+	} else {
+		if (requestedPath.startsWith('/dashboard')) {
+			// not a public route and we don't have a token
+			// redirect to signin
+			throw redirect(303, '/signin');
 		}
 	}
 
